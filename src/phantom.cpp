@@ -15,7 +15,7 @@ int main()
     auto grid_size = 10;
     auto grid_refinement = 5;
     auto modes = 3;
-    auto nos = 1;
+    auto nos = 10;
     auto T_min = 1000.0;
     auto T_max = 2000.0;
     std::string filename = "MAMLAS_test_gaussian_3_2d.hdf5";
@@ -45,9 +45,13 @@ int main()
                                    { return a + b; });
         }
         T = matplot::transform(T, [](auto val)
-                               { return val/3; });
+                               { return val / 3; });
     }
 
-    matplot::surf(X,Y,T_data[0]);
+    auto file = h5::File(filename, h5::File::Create | h5::File::Overwrite);
+    file.createDataSet("data",T_data);
+    file.createDataSet("T_min",T_min);
+    file.createDataSet("T_max",T_max);
+    matplot::surf(X, Y, T_data[0]);
     matplot::show();
 }
