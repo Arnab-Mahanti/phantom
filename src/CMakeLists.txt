@@ -10,13 +10,6 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 # TODO: Add tests and install targets if needed.
-find_package(PythonLibs REQUIRED)
-
 target_include_directories(phantom PUBLIC ${CMAKE_SOURCE_DIR}/dependencies)
-target_include_directories(phantom PUBLIC ${Python3_INCLUDE_DIRS})
-
 target_link_libraries(phantom PUBLIC matplot)
 
-if (WIN32 AND MSVC)
-	target_link_libraries(phantom ${Python3_LIBRARIES_RELEASE})
-endif()

@@ -22,27 +22,30 @@ int main()
     std::mt19937 mt(entropy_source());
     auto dist = std::uniform_real_distribution<double>();
 
-    auto T_data = std::valarray(std::valarray<double>(0.0, grid_refinement * grid_size), nos);
-    std::valarray<double> x(grid_refinement * grid_size);
-    std::iota(std::begin(x), std::end(x), 0.0);
+    auto T_data = std::vector(nos,
+                              matplot::vector_2d(grid_refinement * grid_size,
+                                                 matplot::vector_1d(grid_refinement * grid_size, 0.0f)));
 
-    range::transform(x, std::begin(x), [&x](auto val)
-                     { return val / (x.size() - 1); });
+    auto x = matplot::linspace(0.0, 1.0, grid_refinement * grid_size);
+    auto [X, Y] = matplot::meshgrid(x);
 
-    range::transform(T_data, std::begin(T_data), [&](auto val)
-                     {
-            for (size_t i = 0; i < modes; i++)
-            {
-                auto peak_x = dist(mt);
-                auto peak_y = dist(mt);
-                auto peak_variance = dist(mt);
-                val += dist(mt) * std::exp(-((x - peak_x) * (x - peak_x) + (x - peak_y) * (x - peak_y)) / (2 * peak_variance * peak_variance));
-            }
-    val /= 3;
-    return val; });
+    for (auto &&T : T_data)
+    {
+        for (size_t n = 0; n < modes; n++)
+        {
+            auto peak_x = dist(mt);
+            auto peak_y = dist(mt);
+            auto peak_variance = dist(mt);
+            auto peak_magnitude = dist(mt);
+            auto t = matplot::transform(X, Y, [&](auto x, auto y)
+                                        { return peak_magnitude * std::exp(-((x - peak_x) * (x - peak_x) + (y - peak_y) * (y - peak_y)) / (2 * peak_variance * peak_variance)); });
+            T = matplot::transform(T, t, [](auto a, auto b)
+                                   { return a + b; });
+        }
+        T = matplot::transform(T, [](auto val)
+                               { return val/3; });
+    }
 
-   
-
-    // range::copy(T_data[0], std::ostream_iterator<double>(std::cout, "\n"));
-    // std::cout << "\n";
+    matplot::surf(X,Y,T_data[0]);
+    matplot::show();
 }
