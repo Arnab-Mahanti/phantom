@@ -9,6 +9,7 @@
 #include <highfive/H5Easy.hpp>
 
 namespace range = std::ranges;
+namespace h5 = HighFive;
 int main()
 {
     auto grid_size = 10;
