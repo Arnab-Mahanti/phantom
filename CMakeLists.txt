@@ -8,3 +8,4 @@ project ("phantom")
 # Include sub-projects.
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/matplotplusplus)
+add_subdirectory(${CMAKE_SOURCE_DIR}/dependencies/highFive)
