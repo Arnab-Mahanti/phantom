@@ -6,6 +6,7 @@
 #include <string>
 #include <valarray>
 #include <matplot/matplot.h>
+#include <highfive/H5Easy.hpp>
 
 namespace range = std::ranges;
 int main()
