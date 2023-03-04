@@ -41,10 +41,7 @@ int main()
     val /= 3;
     return val; });
 
-    auto [X, Y] = matplot::meshgrid(matplot::linspace(0.0, 1.0, grid_refinement * grid_size), matplot::linspace(0.0, 1.0, grid_refinement * grid_size));
-
-    matplot::contourf(X, Y, std::vector(std::begin(T_data[0]), std::end(T_data[0])));
-    matplot::show();
+   
 
     // range::copy(T_data[0], std::ostream_iterator<double>(std::cout, "\n"));
     // std::cout << "\n";
