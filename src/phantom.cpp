@@ -46,8 +46,8 @@ int main()
             T = matplot::transform(T, t, [](auto a, auto b)
                                    { return a + b; });
         }
-        T = matplot::transform(T, [](auto val)
-                               { return val / 3; });
+        T = matplot::transform(T, [&](auto val)
+                               { return val / modes; });
     }
 
     auto file = h5::File(filename, h5::File::Create | h5::File::Overwrite);
